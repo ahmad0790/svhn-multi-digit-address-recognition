@@ -90,10 +90,3 @@ print(vgg_random_acc)
 #print("Predicted Values")
 #print(predicted_sequences[0:10,:])
 '''
-
-
-
-
-
-
-
