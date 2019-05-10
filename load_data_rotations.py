@@ -17,7 +17,6 @@ from tensorflow.python.keras.models import Model
 from tensorflow.python.keras import backend as K
 from scipy.ndimage import rotate
 
-
 def get_box_data(index, hdf5_data):
 	"""
 	get `left, top, width, height` of each picture
