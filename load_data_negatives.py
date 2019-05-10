@@ -56,7 +56,7 @@ def load_images(folder, img_shape=64, resize_shape = 54, crops =1, augmentation=
 	size = mat_data['/digitStruct/name'].size
 	
 	if quick_load == True:
-		size = 1000
+		size = 100
 	#crops = 5
 	labels_array = np.zeros((size*crops,5,11),dtype=np.uint8)
 	length_array = np.zeros((size*crops,1,6), dtype=np.uint8)
@@ -132,7 +132,7 @@ def load_images(folder, img_shape=64, resize_shape = 54, crops =1, augmentation=
 			negative_image = cv2.resize(negative_image, (resize_shape,resize_shape))
 
 		else:
-			negative_image = np.full((54,54,3),255)
+			negative_image = np.full((resize_shape,resize_shape,3),255)
 
 		#cv2.imshow('image', negative_image.astype(np.uint8))
 		#cv2.waitKey(0)
