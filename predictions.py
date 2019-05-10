@@ -17,7 +17,6 @@ from tensorflow.python.keras.models import Model, load_model
 from tensorflow.python.keras import backend as K
 from load_data import load_images
 from cnn import build_cnn_model
-#from keras.models import Model, load_model
 
 def infer_label(model_predictions):
 
@@ -143,13 +142,4 @@ print(three_digit_preds)
 best_match = images_list[766]
 print(best_match.shape)
 cv2.imwrite("best_match.png", best_match)
-
-
-
-
-
-#print(best_box)
-#print(prediction_label)
-#print(prediction_score)
-#cv2.rectangle(image, (best_box[x], best_box[y]), (x+54, y+54), (0,0,255), 2)
 cv2.imwrite("test_image.png", image)
