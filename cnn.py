@@ -17,7 +17,8 @@ from tensorflow.python.keras.models import Model
 from tensorflow.python.keras import backend as K
 from load_data import load_images
 from load_data_negatives import load_images as load_images_negative
-
+from load_data_rotations import load_images as load_images_rot
+from scipy.ndimage import rotate
 
 #MODEL ARCHITECTURE BASED ON GOODFELLOW PAPER
 def build_cnn_model():
@@ -104,40 +105,41 @@ def build_cnn_model():
 
 	return model
 
-def all_categorical_accuracy(y_true, y_pred):
-	print(y_true)
-	print(y_pred)
-	print(y_true.shape)
-	print(y_pred.shape)
-	return K.minimum(K.cast(K.equal(K.argmax(y_true, axis=-1),K.argmax(y_pred[0], axis=-1)),K.floatx()),K.cast(K.equal(K.argmax(y_true, axis=-1),K.argmax(y_pred[1], axis=-1)),K.floatx()))
+if __name__ == "__main__":	
+
+	rot_images, rot_labels, rot_length = load_images_rot(folder='train', crops =4, augmentation=True)
+	train_images, train_labels, train_length = load_images_negative(folder = 'train', augmentation = False)
+	extra_images, extra_labels, extra_length = load_images_negative(folder = 'extra', augmentation = False)
 
 
+	#train_images, train_labels, train_length = load_images_negative(folder = 'train', augmentation = False, quick_load = True)
+	#extra_images, extra_labels, extra_length = load_images_negative(folder = 'extra', augmentation = False, quick_load = True)
 
-#train_images, train_labels, train_length = load_images_negative(folder = 'train', augmentation = False)
-#extra_images, extra_labels, extra_length = load_images_negative(folder = 'extra', augmentation = False)
+	train_images = np.concatenate((train_images, extra_images), axis=0)
+	train_labels = np.concatenate((train_labels, extra_labels), axis=0)
+	train_length = np.concatenate((train_length, extra_length), axis=0)
 
-#train_images, train_labels, train_length = load_images_negative(folder = 'train', augmentation = False, quick_load = True)
-#extra_images, extra_labels, extra_length = load_images_negative(folder = 'extra', augmentation = False, quick_load = True)
+	train_images = np.concatenate((train_images, rot_images), axis=0)
+	train_labels = np.concatenate((train_labels, rot_labels), axis=0)
+	train_length = np.concatenate((train_length, rot_length), axis=0)
 
-#train_images = np.concatenate((train_images, extra_images), axis=0)
-#train_labels = np.concatenate((train_labels, extra_labels), axis=0)
-#train_length = np.concatenate((train_length, extra_length), axis=0)
+	test_images, test_labels, test_length = load_images(folder = 'test', augmentation = False)
+	#test_images, test_labels, test_length = load_images(folder = 'test', augmentation = False, quick_load = True)
 
-#test_images, test_labels, test_length = load_images(folder = 'test', augmentation = False)
-#test_images, test_labels, test_length = load_images(folder = 'test', augmentation = False, quick_load = True)
+	print(train_images.shape)
+	print(train_labels.shape)
+	print(train_length.shape)
 
-#print(train_images.shape)
-#print(train_labels.shape)
-#print(train_length.shape)
+	print(test_images.shape)
+	print(test_labels.shape)
+	print(test_length.shape)
 
-#print(test_images.shape)
-#print(test_labels.shape)
-#print(test_length.shape)
+	np.save('train_images', train_images) 
+	np.save('train_labels', train_labels) 
+	np.save('train_length', train_length) 
 
-#np.save('train_images', train_images) 
-#np.save('train_labels', train_labels) 
-#np.save('train_length', train_length) 
+	np.save('test_images', test_images) 
+	np.save('test_labels', test_labels) 
+	np.save('test_length', test_length) 
 
-#np.save('test_images', test_images) 
-#np.save('test_labels', test_labels) 
-#np.save('test_length', test_length) 
+	#END
