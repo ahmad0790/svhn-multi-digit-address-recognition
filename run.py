@@ -30,7 +30,6 @@ output_counter = 1
 best_cnn_model = load_model('best_cnn_model.h5', custom_objects={'BatchNormalizationV1': BatchNormalization})
 best_cnn_model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 img_list = ['cv-2464-161.png','cv-2464-717.png','cv-2464-981.png','cv-2464-1309.png','cv-2464-1448.png']
-#img_list = ['1220.png', 'cv-2464-161.png','cv-2464-717.png','cv-2464-981.png','cv-2464-1309.png','cv-2464-1448.png']
 
 window= 40
 stride = 10
