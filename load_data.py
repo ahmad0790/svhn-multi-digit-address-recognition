@@ -15,6 +15,8 @@ from tensorflow.python.keras.callbacks import LearningRateScheduler
 from tensorflow.python.keras.layers import Input, Dense
 from tensorflow.python.keras.models import Model
 from tensorflow.python.keras import backend as K
+from scipy import ndimage
+
 
 def get_box_data(index, hdf5_data):
 	"""
@@ -55,7 +57,7 @@ def load_images(folder, img_shape=64, resize_shape = 54, crops =1, augmentation=
 	size = mat_data['/digitStruct/name'].size
 	
 	if quick_load == True:
-		size = 1000
+		size = 100
 	#crops = 5
 	labels_array = np.zeros((size*crops,5,11),dtype=np.uint8)
 	length_array = np.zeros((size*crops,1,6), dtype=np.uint8)
