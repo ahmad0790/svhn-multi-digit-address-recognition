@@ -13,7 +13,7 @@ Ian J. Goodfellow, Yaroslav Bulatov, Julian Ibarz, Sacha Arnoud, Vinay Shet`
 2) `VERY DEEP CONVOLUTIONAL NETWORKS FOR LARGE-SCALE IMAGE RECOGNITION 
 Karen Simonyan & Andrew Zisserman + Visual Geometry Group, Department of Engineering Science, University of Oxford` (https://arxiv.org/pdf/1409.1556.pdf)
 
-Th Goodfellow paper performs slightly better coming at around 92% all digit accuracy (with the worst digit number no less than 95% accuracy). To showcase performance of classifier under different viewing conditions a short video has been uploaded on youtube for reference:
+Th Goodfellow paper performs slightly better coming at around 92% all digit accuracy (with the worst digit number no less than 95% accuracy). To showcase performance of classifier under different viewing conditions a short video has been uploaded on youtube for reference:<br/>
 
 https://youtu.be/ln-Tg_ou5iU
 
@@ -41,6 +41,8 @@ Results are also summarized in report.pdf for reference.
 
 ## Example Images
 Here are some examples of street house images correctly classified by the model showing scale, rotation, positional and lighting invariance<br/>
+
+A full video can also be found on youtube here: https://youtu.be/ln-Tg_ou5iU
 
 ![Image 1](graded_images/1.png)
 ![Image 2](graded_images/3.png)
