@@ -25,7 +25,7 @@ Results are also summarized in report.pdf for reference.
 `load_data_rotations.py` Same preprrocessing but with added random rotations<br/>
 `load_data_negatives.py` Same preprrocessing but with negative labelled images added (Those imges with no street number)
 
-### Model Arrchitecture
+### Model Architecture
 `CNN.py` Builds the Goodfellow paper CNN model<br/>
 `VGG_model.py` Builds the VGG paper CNN model
 
