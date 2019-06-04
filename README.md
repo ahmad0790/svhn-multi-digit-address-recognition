@@ -6,12 +6,12 @@ The model is trained on 150K+ unique images total with data augmented through ra
 
 CNN Model architecturs were inspired by the folloiwng academic papers:
 
-1) Multi-digit Number Recognition from Street View Imagery using Deep Convolutional Neural Networks
-Ian J. Goodfellow, Yaroslav Bulatov, Julian Ibarz, Sacha Arnoud, Vinay Shet
+1) `Multi-digit Number Recognition from Street View Imagery using Deep Convolutional Neural Networks
+Ian J. Goodfellow, Yaroslav Bulatov, Julian Ibarz, Sacha Arnoud, Vinay Shet`
 (https://arxiv.org/pdf/1312.6082.pdf)
 
-2) VERY DEEP CONVOLUTIONAL NETWORKS FOR LARGE-SCALE IMAGE RECOGNITION 
-Karen Simonyan & Andrew Zisserman + Visual Geometry Group, Department of Engineering Science, University of Oxford (https://arxiv.org/pdf/1409.1556.pdf)
+2) `VERY DEEP CONVOLUTIONAL NETWORKS FOR LARGE-SCALE IMAGE RECOGNITION 
+Karen Simonyan & Andrew Zisserman + Visual Geometry Group, Department of Engineering Science, University of Oxford` (https://arxiv.org/pdf/1409.1556.pdf)
 
 Th Goodfellow paper performs slightly better coming at around 92% all digit accuracy (with the worst digit number no less than 95% accuracy). To showcase performance of classifier under different viewing conditions a short video has been uploaded on youtube for reference:
 
