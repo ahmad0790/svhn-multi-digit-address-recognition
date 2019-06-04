@@ -23,7 +23,7 @@ Results are also summarized in report.pdf for reference.
 ### Data Processing
 `load_data.py` Processes each image, crops image with bounding box and generates training labels for each image
 `load_data_rotations.py` Same preprrocessing but with added random rotations
-`load_data_rotations.py` Same preprrocessing but with negative labelleed imagees added (Those imges with no street number)
+`load_data_negativees.py` Same preprrocessing but with negative labelleed imagees added (Those imges with no street number)
 
 ### Model Arrchitecture
 `CNN.py` Builds the Goodfellow paper CNN model
