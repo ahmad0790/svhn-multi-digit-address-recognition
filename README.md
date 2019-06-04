@@ -4,7 +4,7 @@ This project trains different Convolutional Neural Network model architectures u
 
 The model is trained on 150K+ unique images total with data augmented through random rotations and shifts to help results be more robust to location, lighting, orientation and scale. After training a sliding window (but originally a gaussian pyramid approach) is used to detect the exact location of a number in an image in addition to the number itself
 
-CNN Model architecturs were inspired by the folloiwng academic papers:
+CNN Model architectures were based on the folloiwng academic papers:
 
 1) `Multi-digit Number Recognition from Street View Imagery using Deep Convolutional Neural Networks
 Ian J. Goodfellow, Yaroslav Bulatov, Julian Ibarz, Sacha Arnoud, Vinay Shet`
@@ -38,3 +38,9 @@ Results are also summarized in report.pdf for reference.
 
 ## Analysis Report
 `report_ahmad_khan.pdf` Report summarizes results and model performance using the different CNN model architectures
+
+## Example Images
+Here are some examples of street house images correctly classified by the model showing scale, rotation, positional and lighting invariance
+
+![alt text](graded_images/img.png)
+
