@@ -37,4 +37,4 @@ Results are also summarized in report.pdf for reference.
 `create_video.py` Predicts for each frame in a video both the location and sequence of streeet numbers in an image. saves video as an mp4
 
 ## Analysis Report
-`report_ahmad_khan.pdf` Report summarizes results and modele performance using the different CNN model architectures
+`report_ahmad_khan.pdf` Report summarizes results and model performance using the different CNN model architectures
