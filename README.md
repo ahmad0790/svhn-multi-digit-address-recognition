@@ -35,3 +35,6 @@ Results are also summarized in report.pdf for reference.
 ### Video Predictions and Localization
 `predictions.py` Functions to make prredictions on new images<br/>
 `create_video.py` Predicts for each frame in a video both the location and sequence of streeet numbers in an image. saves video as an mp4
+
+## Analysis Report
+`ahmad_khan_report.pdf' Report summarizes results and modele performance using the different CNN model architectures
