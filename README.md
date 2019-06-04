@@ -40,7 +40,8 @@ Results are also summarized in report.pdf for reference.
 `report_ahmad_khan.pdf` Report summarizes results and model performance using the different CNN model architectures
 
 ## Example Images
-Here are some examples of street house images correctly classified by the model showing scale, rotation, positional and lighting invariance
+Here are some examples of street house images correctly classified by the model showing scale, rotation, positional and lighting invariance<br/>
 
-![alt text](graded_images/img.png)
-
+![Image 1](graded_images/1.png)
+![Image 2](graded_images/3.png)
+![Image 2](graded_images/5.png)
