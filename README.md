@@ -23,15 +23,15 @@ Results are also summarized in report.pdf for reference.
 ### Data Processing
 `load_data.py` Processes each image, crops image with bounding box and generates training labels for each image
 `load_data_rotations.py` Same preprrocessing but with added random rotations<br/>
-`load_data_negativees.py` Same preprrocessing but with negative labelleed imagees added (Those imges with no street number)
+`load_data_negatives.py` Same preprrocessing but with negative labelled images added (Those imges with no street number)
 
 ### Model Arrchitecture
 `CNN.py` Builds the Goodfellow paper CNN model<br/>
 `VGG_model.py` Builds the VGG paper CNN model
 
 ### Model Training
-`model_augmented.py` Trains the Goodfellow based model on training data using the CNN.py model architecture
+`model_augmented.py` Trains the Goodfellow based model on training data using the CNN.py model architecture<br/>
 
 ### Video Predictions and Localization
-`predictions.py` Functions to make prredictions on new images
+`predictions.py` Functions to make prredictions on new images<br/>
 `create_video.py` Predicts for each frame in a video both the location and sequence of streeet numbers in an image. saves video as an mp4
