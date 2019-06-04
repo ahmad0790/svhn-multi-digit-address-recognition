@@ -138,13 +138,6 @@ def load_images(folder, img_shape=64, resize_shape = 54, crops =1, augmentation=
 				augmented_labels_array[i*crops+k,:,:] = labels_array[i,:,:]
 				augmented_length_array[i*crops+k,:,:] = length_array[i,:,:]
 
-				#print(l)
-				#print(augmented_labels_array[i+k,:,:])
-				#print(augmented_length_array[i+k,:,:])
-				#cv2.imshow('image', random_crop.astype(np.uint8))
-				#cv2.waitKey(0)
-				#image = cv2.resize(image, (resize_shape,resize_shape))
-
 
 		else:
 			image = cv2.resize(image, (resize_shape,resize_shape))

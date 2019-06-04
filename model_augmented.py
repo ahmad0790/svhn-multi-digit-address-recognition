@@ -23,7 +23,6 @@ from cnn import build_cnn_model
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' 
 sess = tf.Session(config=tf.ConfigProto(log_device_placement=True))
 
-
 #train_images, train_labels, train_length = load_images_negative(folder = 'train', augmentation = False, quick_load = False)
 #test_images, test_labels, test_length = load_images(folder = 'test', augmentation = False, quick_load = False)
 

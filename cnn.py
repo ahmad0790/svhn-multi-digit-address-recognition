@@ -20,7 +20,7 @@ from load_data_negatives import load_images as load_images_negative
 from load_data_rotations import load_images as load_images_rot
 from scipy.ndimage import rotate
 
-#MODEL ARCHITECTURE BASED ON GOODFELLOW PAPER
+#CNN MODEL ARCHITECTURE BASED ON GOODFELLOW PAPER
 def build_cnn_model():
 	inputShape = (54, 54, 3)
 	inputs = Input(shape=inputShape)

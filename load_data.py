@@ -120,9 +120,6 @@ def load_images(folder, img_shape=64, resize_shape = 54, crops =1, augmentation=
 		height_extra, width_extra = int(height*scale),int(width*scale)
 		image = image [max(0,int(top-height_extra)):int(top + height + height_extra), max(0,int(left-width_extra)):int(left+width+width_extra),:]
 
-		#print(box)
-		#print(image.shape)
-
 		if augmentation == True:
 
 			image = cv2.resize(image, (img_shape,img_shape))

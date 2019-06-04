@@ -83,12 +83,10 @@ def load_images(folder, img_shape=64, resize_shape = 54, crops =1, augmentation=
 		name_string = image_file.split(".")[0]
 		name = [str(s) for s in name_string if s.isdigit()]
 		name = ''.join(name)
-		#print('Image Name: ' + str(name))
 
 		#print('Get Box Data')
 		box = get_box_data(i, mat_data)
 		label_string = box['label']
-		#print(label_string)
 
 		l = []
 		for j in range(0, 5):
@@ -156,11 +154,6 @@ def load_images(folder, img_shape=64, resize_shape = 54, crops =1, augmentation=
 				augmented_labels_array[i*crops+k,:,:] = labels_array[i,:,:]
 				augmented_length_array[i*crops+k,:,:] = length_array[i,:,:]
 
-				#print(l)
-				#print(augmented_labels_array[i+k,:,:])
-				#print(augmented_length_array[i+k,:,:])
-				#cv2.imshow('image', random_crop.astype(np.uint8))
-				#cv2.waitKey(0)
 
 		else:
 			image = cv2.resize(image, (resize_shape,resize_shape))
@@ -183,8 +176,5 @@ def load_images(folder, img_shape=64, resize_shape = 54, crops =1, augmentation=
 		augmented_labels_array = np.concatenate((augmented_labels_array, np.array(negative_labels_array)),axis=0)
 		augmented_length_array = np.concatenate((augmented_length_array, np.array(negative_length_array)),axis=0)
 
-
-	#print(augmented_length_array[995:1005,:,:])
-	#print(augmented_labels_array[995:1005,:,:])
 
 	return (images_array, augmented_labels_array, augmented_length_array)

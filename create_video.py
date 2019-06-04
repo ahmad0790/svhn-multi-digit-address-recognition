@@ -24,7 +24,7 @@ if not os.path.isdir(OUT_DIR):
 	os.makedirs(OUT_DIR)
 
 
-###these are from our problem sets
+###this function is from the problem set
 def video_frame_generator(filename):
 	"""A generator function that returns a frame on each 'next()' call.
 
@@ -49,80 +49,6 @@ def video_frame_generator(filename):
 	video.release()
 	yield None
 
-def only_read_video(video_name, input_video, fps, frame_ids, output_prefix,
-							counter_init, predictions, window, stride):
-
-	#video = os.path.join(VID_DIR, video_name)
-	image_gen = video_frame_generator(video_name)
-
-	image = image_gen.__next__()
-	#print(image.shape)
-	#image = cv2.resize(image, (427, 240))
-	#print(image.shape)
-	h, w, d = image.shape
-
-	out_path = "output/cv_{}-{}".format(output_prefix[4:], video_name)
-	#video_out = mp4_video_writer(out_path, (w, h), fps)
-
-	output_counter = counter_init
-	
-	best_cnn_model = load_model('best_cnn_model.h5', custom_objects={'BatchNormalizationV1': BatchNormalization})
-	best_cnn_model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-			
-	frame_num = 1
-
-	while image is not None:
-		#print(image.shape)
-		#image = cv2.resize(image, (427, 240))
-		#print(image.shape)
-
-		##MODEL PREDICTIONS
-		if predictions == True and frame_num >=60:
-			print("Processing fame {}".format(frame_num))
-			images_list, resized_image_info = preds.create_image_pyramids(image, stride, window)
-			if output_counter == 60:
-				print("Number of Images: " + str(images_list.shape))
-			model_predictions = best_cnn_model.predict(images_list)
-			best_predictions, best_predictions_prob, best_predictions_length, best_sequences, best_individual_probs = preds.infer_best_match(images_list, model_predictions)
-			best_match = images_list[best_predictions[0]]
-			best_match_str = "best_match_" + "{}.png".format(output_counter)
-			cv2.imwrite(os.path.join(OUT_DIR, best_match_str), best_match)
-
-			#print('The Best')
-			#print(resized_image_info)
-			#print(best_predictions[0])
-			#print(best_predictions_prob[0])
-			#print(best_predictions_length[0])
-			#print(best_sequences[0])
-			#print(best_individual_probs[0])
-
-			best_sequence = ''.join(map(str,best_sequences[0]))
-			best_sequence_index = best_predictions[0]
-			print('Best Sequence: ' + str(best_sequence))
-			print(resized_image_info[str(best_predictions[0])])
-			print('')
-
-			actual_x = int(resized_image_info[str(best_sequence_index)]['x_coord']*1.00/resized_image_info[str(best_sequence_index)]['x_scale'])
-			actual_y = int(resized_image_info[str(best_sequence_index)]['y_coord']*1.00/resized_image_info[str(best_sequence_index)]['y_scale'])
-
-			box_x_length = int(window*1.00/resized_image_info[str(best_sequence_index)]['x_scale'])
-			box_y_length = int(window*1.00/resized_image_info[str(best_sequence_index)]['y_scale'])
-
-			cv2.rectangle(image, (actual_x, actual_y), (min(426, actual_x+box_x_length), min(239, actual_y+box_y_length)), (0,0,255), 2)
-			cv2.putText(image, str("Found Address: " + best_sequence), (actual_x, max(5, actual_y-5)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255)) 
-
-			video_out.write(image)
-
-		output_counter += 1
-
-		out_str = output_prefix + "{}.png".format(output_counter)
-		save_image(out_str, image)
-		
-		image = image_gen.__next__()
-		frame_num += 1
-
-	#video_out.release()
-
 
 def process_video(video_name, input_video, fps, frame_ids, output_prefix,
 							counter_init, predictions, window, stride):
@@ -131,9 +57,6 @@ def process_video(video_name, input_video, fps, frame_ids, output_prefix,
 	image_gen = video_frame_generator(video_name)
 
 	image = image_gen.__next__()
-	#print(image.shape)
-	#image = cv2.resize(image, (427, 240))
-	#print(image.shape)
 	h, w, d = image.shape
 
 	out_path = "output/cv_{}-{}".format(output_prefix[4:], video_name)
@@ -147,9 +70,6 @@ def process_video(video_name, input_video, fps, frame_ids, output_prefix,
 	frame_num = 1
 
 	while image is not None:
-		#print(image.shape)
-		#image = cv2.resize(image, (427, 240))
-		#print(image.shape)
 
 		##MODEL PREDICTIONS
 		if predictions == True and frame_num >=60:
@@ -163,13 +83,6 @@ def process_video(video_name, input_video, fps, frame_ids, output_prefix,
 			best_match_str = "best_match_" + "{}.png".format(output_counter)
 			cv2.imwrite(os.path.join(OUT_DIR, best_match_str), best_match)
 
-			#print('The Best')
-			#print(resized_image_info)
-			#print(best_predictions[0])
-			#print(best_predictions_prob[0])
-			#print(best_predictions_length[0])
-			#print(best_sequences[0])
-			#print(best_individual_probs[0])
 
 			best_sequence = ''.join(map(str,best_sequences[0]))
 			best_sequence_index = best_predictions[0]
@@ -227,7 +140,7 @@ video_file = "movie_2468.mp4"
 my_video = "movie_2468.mp4"  
 process_video(video_file, my_video, fps, frame_ids, "cv-2464-", 1, True, 40,10)
 
-'''
+
 video_file = "movie_2348.mp4"
 my_video = "movie_2348.mp4"  
 process_video(video_file, my_video, fps, frame_ids, "cv-2348-", 1, True, 40,5)
@@ -239,4 +152,3 @@ process_video(video_file, my_video, fps, frame_ids, "cv-525-", 1, True, 40,10)
 video_file = "movie_512.mp4"
 my_video = "movie_512.mp4"  
 process_video(video_file, my_video, fps, frame_ids, "cv-512-", 1, True, 40,10)
-'''

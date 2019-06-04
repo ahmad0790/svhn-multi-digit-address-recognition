@@ -65,7 +65,7 @@ print('CNN Model Accuracy with Data Augmentation and Rotation')
 cnn_rot_acc = evaluate_model_accuracy('best_cnn_model.h5', test_images, test_labels)
 print(cnn_rot_acc)
 
-'''
+
 test_images, test_labels, test_length = load_images(folder = 'test', augmentation = False, quick_load=False)
 cnn_extra_acc = evaluate_model_accuracy('best_cnn_model_eextras.h5', test_images, test_labels)
 
@@ -89,4 +89,3 @@ print(vgg_random_acc)
 
 #print("Predicted Values")
 #print(predicted_sequences[0:10,:])
-'''

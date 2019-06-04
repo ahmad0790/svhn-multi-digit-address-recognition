@@ -17,129 +17,102 @@ from tensorflow.python.keras.models import Model, load_model
 from tensorflow.python.keras import backend as K
 from load_data import load_images
 from cnn import build_cnn_model
+from collections import defaultdict
+#from keras.models import Model, load_model
 
-def infer_label(model_predictions):
-
-	print('inferrirng')
-
-	predicted_label = []
-	predicted_length = []
-	prediction_score = []
-		
-	length = model_predictions[5][0]
-	predicted_length = np.argmax(length) + 1
-	print(predicted_length)
-
-	for j in range(0,predicted_length):
-		preds = np.array(model_predictions[j][0])
-		print(preds)
-		predicted_label.append(np.argmax(preds))
-		prediction_score.append(np.max(preds))
-
-	return prediction_score, predicted_length, predicted_label
-
-def create_sliced_dataset(image, stride, window_size):
+def create_sliced_dataset(image, stride, window_size, x_scale, y_scale, counter):
 	images_list = []
+	slice_info = {}
 	for x in range(0,image.shape[1],stride):
 		for y in range(0,image.shape[0],stride):
-			#print(x,y)
-			image_slice = image[y:y+window_size, x:x+window_size]
+			image_slice = image[y:y+window_size[1], x:x+window_size[0]]
 
 			
-			if image_slice.shape[0] == window_size and image_slice.shape[1] == window_size:
+			if image_slice.shape[0] == window_size[1] and image_slice.shape[1] == window_size[0] and image_slice.shape[0]>2 and image_slice.shape[1]>2:
+				image_slice =cv2.resize(image_slice, (54,54))
+				
 				images_list.append(image_slice)
+				slice_info[str(counter)] = {}
+				slice_info[str(counter)]['x_scale'] = x_scale
+				slice_info[str(counter)]['y_scale'] = y_scale
+				slice_info[str(counter)]['x_coord'] = x
+				slice_info[str(counter)]['y_coord'] = y
+				counter +=1
 
-	return np.array(images_list)
-			
+	return np.array(images_list), slice_info, counter
 
-print('Final Results')
+def create_image_pyramids(image, stride, new_size):
+	iteration = 0
+	counter = 0
+	##range used for video predictions. Bigger scale range because theree are more images
+	scale_range = [1.5,1.2,1.0,0.7,0.5,0.3,0.2,0.1]
 
-image_file = 'test.png'
-best_cnn_model = load_model('best_cnn_model.h5', custom_objects={'BatchNormalizationV1': BatchNormalization})
-best_cnn_model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-image = cv2.imread(image_file).astype(np.float32)
-#image = cv2.resize(image, (256,256))
+	##range used for image predictions
+	#scale_range = [1.5,1.0,0.5,0.3]
+	#x_scale_range = [0.2, 0.5]
+	#y_scale_range = [0.5, 1.5]
 
-images_list = create_sliced_dataset(image, 15, 54)
-model_predictions = best_cnn_model.predict(images_list)
+	for x_scales in scale_range:
+		for y_scales in scale_range:
 
-print(images_list.shape)
-print(model_predictions[0].shape)
-print(model_predictions[1].shape)
-print(model_predictions[2].shape)
-print(model_predictions[3].shape)
-print(model_predictions[4].shape)
-print(model_predictions[5].shape)
+			iteration += 1
+			resized =cv2.resize(image, None, fx=x_scales,fy=y_scales)
+			resized_images_list, image_info, counter = create_sliced_dataset(resized, stride, (new_size,new_size), x_scales, y_scales, counter)
+			if iteration == 1:
+				images_list = np.array(resized_images_list)
+				resized_images_info = image_info.copy()
+			else:
 
-digit1_max_indices = np.argmax(model_predictions[0], axis = 1)
-digit1_max_probs = np.max(model_predictions[0], axis = 1)
-
-digit2_max_indices = np.argmax(model_predictions[1], axis = 1)
-digit2_max_probs = np.max(model_predictions[1], axis = 1)
-
-digit3_max_indices = np.argmax(model_predictions[2], axis = 1)
-digit3_max_probs = np.max(model_predictions[2], axis = 1)
-
-digit4_max_indices = np.argmax(model_predictions[3], axis = 1)
-digit4_max_probs = np.max(model_predictions[3], axis = 1)
-
-digit5_max_indices = np.argmax(model_predictions[4], axis = 1)
-digit5_max_probs = np.max(model_predictions[4], axis = 1)
-
-len_max_indices = np.argmax(model_predictions[5], axis = 1)
-len_max_probs = np.max(model_predictions[5], axis = 1)
-
-digit_indices = np.array([digit1_max_indices, digit2_max_indices, digit3_max_indices, digit4_max_indices, digit5_max_indices, len_max_indices]).reshape(6, images_list.shape[0])
-digit_probs = np.array([digit1_max_probs, digit2_max_probs, digit3_max_probs, digit4_max_probs, digit5_max_probs, len_max_probs]).reshape(6, images_list.shape[0])
-
-print(len_max_indices.shape)
-print(len_max_indices)
-print(len_max_probs)
-
-print(digit_indices)
-print(digit_probs)
-
-predicted_prob_sequence = []
-
-for i in range(0,images_list.shape[0]):
-
-	total_prob = 0
-	mean_prob = 0
-	pred_length = digit_indices[5,i]
-	
-	if pred_length > 0:
-		for j in range(0, pred_length):
-			if digit_indices[j,i] != 10:
-				total_prob += digit_probs[j,i]
-
-		mean_prob = total_prob*1.00/pred_length
-
-	else:
-		total_prob = 0
-		mean_prob = 0
-
-	predicted_prob_sequence.append(total_prob)
+				if resized_images_list.shape[0]>0:
+					images_list = np.concatenate((images_list,resized_images_list), axis=0)
+					resized_images_info.update(image_info)
 
 
-predicted_prob_sequence = np.array(predicted_prob_sequence)
+	return images_list, resized_images_info
 
-best_predictions = np.argsort(predicted_prob_sequence*-1)
-best_predictions_prob = np.sort(predicted_prob_sequence*-1)
-best_predictions_length = len_max_indices[best_predictions]
+def infer_best_match(images_list, model_predictions):
+	len_max_indices = np.argmax(model_predictions[5], axis = 1)
+	len_max_probs = np.max(model_predictions[5], axis = 1)
 
-print(best_predictions[0:10])
-print(best_predictions_length[0:10])
+	best_length_probs = np.argsort(len_max_probs*-1)
 
-print(np.argmax(predicted_prob_sequence))
-print(np.max(predicted_prob_sequence))
+	predicted_prob_sequence= []
+	all_sequences = []
+	sequence_probs =[]
 
-print(best_predictions[best_predictions_length==2][0:10])
-print(best_predictions_length[best_predictions_length==2][0:10])
+	for i in range(0,images_list.shape[0]):
 
-three_digit_preds = best_predictions[best_predictions_length==2][0:25]
-print(three_digit_preds)
+		pred_length = len_max_indices[i]
+		total_prob = 1.00
+		sequence = []
+		prob_sequence = []
 
-best_match = images_list[766]
-print(best_match.shape)
-cv2.imwrite("best_match.png", best_match)
-cv2.imwrite("test_image.png", image)
+		for j in range(0,pred_length):
+
+			sequence.append(np.argmax(model_predictions[j][i,:]))
+			total_prob = total_prob+np.max(model_predictions[j][i,:])
+			prob_sequence.append(np.max(model_predictions[j][i,:]))
+
+
+		if pred_length >0 and pred_length <= 4:
+			total_prob = total_prob+model_predictions[5][i,pred_length]
+
+		else:
+			total_prob = 0.0
+		
+		prob_sequence.append(model_predictions[5][i,pred_length])
+		predicted_prob_sequence.append(total_prob)
+		sequence_probs.append(prob_sequence)
+		all_sequences.append(sequence)
+
+	predicted_prob_sequence = np.array(predicted_prob_sequence)
+	sequence_probs = np.array(sequence_probs)
+	all_sequences = np.array(all_sequences)
+
+	best_predictions = np.argsort(predicted_prob_sequence*-1)
+	best_predictions_prob = np.sort(predicted_prob_sequence*-1)
+	best_predictions_length = len_max_indices[best_predictions]
+	best_sequences = all_sequences[best_predictions]
+	best_individual_probs = sequence_probs[best_predictions]
+
+	return best_predictions, best_predictions_prob, best_predictions_length, best_sequences, best_individual_probs
